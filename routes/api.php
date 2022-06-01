@@ -16,11 +16,11 @@ use App\Http\Controllers\Api\Auth\AuthController;
 */
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('logout', [AuthController::class, 'logout']);
 
     Route::controller(UserController::class)->group(function(){
-        Route::post('getFindUser/{id}', 'getFindUser');
-        Route::post('postUserPhoto/{id}', 'postUserPhoto');
+        Route::post('getFindUser', 'getFindUser');
+        Route::post('postUserPhoto', 'postUserPhoto');
     });
 });
 
