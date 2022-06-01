@@ -34,8 +34,9 @@ class UserController extends Controller
     public function postUserPhoto(ImageUploadRequest $request, User $user, $id): JsonResponse
     {
         try {
-            $id = Crypt::decryptString($id);
-            $userCheck = $user->findOrFail($id);
+            $getToken = request()->bearerToken();
+            $token = PersonalAccessToken::findToken($getToken);
+            $userCheck = $user->findOrFail($token->tokenable->id);
 
             $path = public_path('uploads');
             if (!file_exists($path)) {
