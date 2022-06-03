@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\GenderTypeEnum;
 use Carbon\Carbon;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Enums\GenderTypeEnum;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserDetailResource extends JsonResource
 {
@@ -18,6 +18,7 @@ class UserDetailResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => Crypt::encrypt($this['info']->id),
             'name' => $this['info']->name,
             'age' => Carbon::parse($this['info']->birthday)->diff(Carbon::now())->format('%y'),
             'gender' => GenderTypeEnum::gender[$this['info']->gender],

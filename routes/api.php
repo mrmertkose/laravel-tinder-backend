@@ -19,7 +19,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::controller(UserController::class)->group(function(){
-        Route::post('getFindUser', 'getFindUser');
+        Route::get('findUser', 'findUser');
         Route::post('postUserPhoto', 'postUserPhoto');
     });
 });

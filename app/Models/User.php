@@ -59,7 +59,7 @@ class User extends Authenticatable
         return $this->hasMany(UserPhoto::class, 'user_id', 'id');
     }
 
-    public function getFindUser($id)
+    public function findUser($id)
     {
         $user['info'] = User::query()
             ->select('id', 'name', 'birthday', 'gender', 'searching_gender')
@@ -76,7 +76,7 @@ class User extends Authenticatable
             })->where('users.id', '!=', $id)
             ->first();
 
-        $user['photos'] = !is_null($user['info']) ? UserPhoto::query()->select('image_name as image', 'sort')->where('user_id', $user['info']->id)->orderBy('sort')->get() : [];
+        $user['photos'] = !is_null($user['info']) ? UserPhoto::query()->select('image_name as image', 'sort')->where('user_id', $user['info']->id)->latest('sort')->get() : [];
 
         return $user;
     }

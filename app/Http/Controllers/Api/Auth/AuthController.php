@@ -6,7 +6,6 @@ use Throwable;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
-use App\Enums\ResultTypeEnum;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
@@ -22,23 +21,21 @@ class AuthController extends Controller
     {
         try {
             if (!auth()->attempt(request(['email', 'password']))) {
-                return $this->apiResponse(ResultTypeEnum::Error, 'Unauthorized (Credentials Incorrect)');
+                return $this->failure("Unauthorized (Credentials Incorrect)");
             }
 
             $user = User::where('email', $request['email'])->first();
             $token = $user->createToken('authToken')->plainTextToken;
 
-            return $this->apiResponse(
-                ResultTypeEnum::Success,
+            return $this->success(
                 [
                     'user' => new UserResource($user),
                     'access_token' => $token
-                ],
-                'Login Successful'
+                ]
+                ,'Login Successful'
             );
-
         } catch (Throwable $error) {
-            return $this->apiResponseCathError($error->getMessage());
+            return $this->failure($error->getMessage());
         }
     }
 
@@ -50,9 +47,10 @@ class AuthController extends Controller
                 'email' => $request['email'],
                 'password' => bcrypt($request['password'])
             ]);
-            return $this->apiResponse(ResultTypeEnum::Success, null, 'User Created', Response::HTTP_CREATED);
+            return $this->success(null,'User Created', Response::HTTP_CREATED);
+
         } catch (Throwable $error) {
-            return $this->apiResponseCathError($error->getMessage());
+            return $this->failure($error->getMessage());
         }
     }
 
@@ -60,9 +58,9 @@ class AuthController extends Controller
     {
         try {
             auth()->user()->tokens()->delete();
-            return $this->apiResponse(ResultTypeEnum::Success, null, 'Logged out');
+            return $this->success(null,'Logged out');
         } catch (Throwable $error) {
-            return $this->apiResponseCathError($error->getMessage());
+            return $this->failure($error->getMessage());
         }
     }
 

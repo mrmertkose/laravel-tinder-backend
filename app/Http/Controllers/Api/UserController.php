@@ -19,19 +19,19 @@ class UserController extends Controller
 {
     use apiResponse;
 
-    public function getFindUser(User $user): JsonResponse
+    public function findUser(User $user): JsonResponse
     {
         try {
             $getToken = request()->bearerToken();
             $token = PersonalAccessToken::findToken($getToken);
-            $user = $user->getFindUser($token->tokenable->id);
-            return $this->apiResponse(ResultTypeEnum::Success, !is_null($user['info']) ? new UserDetailResource($user) : [], null, !is_null($user['info']) ? Response::HTTP_OK : Response::HTTP_NO_CONTENT);
+            $user = $user->findUser($token->tokenable->id);
+            return $this->success(!is_null($user['info']) ? new UserDetailResource($user) : null);
         } catch (Throwable $error) {
-            return $this->apiResponseCathError($error->getMessage());
+            return $this->failure($error->getMessage());
         }
     }
 
-    public function postUserPhoto(ImageUploadRequest $request, User $user, $id): JsonResponse
+    public function postUserPhoto(ImageUploadRequest $request, User $user): JsonResponse
     {
         try {
             $getToken = request()->bearerToken();
@@ -52,9 +52,9 @@ class UserController extends Controller
                     'sort' => $key,
                 ]);
             }
-            return $this->apiResponse(ResultTypeEnum::Success, null, "Upload Successfully");
+            return $this->success(null,"Upload Successfully");
         } catch (Throwable $error) {
-            return $this->apiResponseCathError($error->getMessage());
+            return $this->failure($error->getMessage());
         }
     }
 }
