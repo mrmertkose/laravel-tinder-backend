@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('users_events_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('user_liked_id');
-            $table->integer('status')->default(0);
+            $table->integer('status')->comment('1 = like | 2 = unlike | 3 = report');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

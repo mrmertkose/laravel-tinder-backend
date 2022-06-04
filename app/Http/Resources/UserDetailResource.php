@@ -23,7 +23,7 @@ class UserDetailResource extends JsonResource
             'age' => Carbon::parse($this['info']->birthday)->diff(Carbon::now())->format('%y'),
             'gender' => GenderTypeEnum::gender[$this['info']->gender],
             'searching_gender' => GenderTypeEnum::gender[$this['info']->searching_gender],
-            'photos' => $this['photos'],
+            'photos' => UserPhotoCollection::collection($this['photos']),
         ];
     }
 }
