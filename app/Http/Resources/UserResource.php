@@ -16,7 +16,7 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => Crypt::encrypt($this->id),
+            'id' => Crypt::encryptString($this->id),
             'name' => $this->name,
             'email' => $this->email,
             'token' => $this->token

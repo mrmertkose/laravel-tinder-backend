@@ -36,13 +36,14 @@ class AuthController extends Controller
     public function register(AuthRegisterRequest $request): JsonResponse
     {
         try {
-            User::create([
+            $user = User::create([
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => bcrypt($request['password'])
             ]);
-            return $this->success(null,'User Created', Response::HTTP_CREATED);
 
+            $user['token'] = $user->createToken('authToken')->plainTextToken;
+            return $this->success(new UserResource($user),'User Created',Response::HTTP_CREATED);
         } catch (Throwable $error) {
             return $this->failure($error->getMessage());
         }

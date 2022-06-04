@@ -18,7 +18,7 @@ class UserDetailResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => Crypt::encrypt($this['info']->id),
+            'id' => Crypt::encryptString($this['info']->id),
             'name' => $this['info']->name,
             'age' => Carbon::parse($this['info']->birthday)->diff(Carbon::now())->format('%y'),
             'gender' => GenderTypeEnum::gender[$this['info']->gender],
