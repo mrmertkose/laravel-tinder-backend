@@ -25,15 +25,9 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request['email'])->first();
-            $token = $user->createToken('authToken')->plainTextToken;
+            $user['token'] = $user->createToken('authToken')->plainTextToken;
 
-            return $this->success(
-                [
-                    'user' => new UserResource($user),
-                    'access_token' => $token
-                ]
-                ,'Login Successful'
-            );
+            return $this->success(new UserResource($user),'Login Successful');
         } catch (Throwable $error) {
             return $this->failure($error->getMessage());
         }
