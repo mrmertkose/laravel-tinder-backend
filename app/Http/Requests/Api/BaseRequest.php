@@ -4,11 +4,9 @@ namespace App\Http\Requests\Api;
 
 use App\Traits\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
-
 
 class BaseRequest extends FormRequest
 {
@@ -41,7 +39,7 @@ class BaseRequest extends FormRequest
         $errors = (new ValidationException($validator))->errors();
 
         throw new HttpResponseException(
-            $this->apiResponseCathError($errors, Response::HTTP_OK)
+            $this->failure($errors)
         );
     }
 }
