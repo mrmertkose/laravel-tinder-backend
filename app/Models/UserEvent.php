@@ -16,4 +16,13 @@ class UserEvent extends Model
         'user_liked_id',
         'status'
     ];
+
+    public function scopeIsMatchCounter($query, $newEventObj)
+    {
+        return $query
+            ->whereIn('user_id', [$newEventObj->user_id,$newEventObj->user_liked_id])
+            ->whereIn('user_liked_id', [$newEventObj->user_id,$newEventObj->user_liked_id])
+            ->where('status', '=', 1)
+            ->count('users_events_id');
+    }
 }

@@ -59,9 +59,9 @@ class User extends Authenticatable
         return $this->hasMany(UserPhoto::class, 'user_id', 'id');
     }
 
-    public function findUser($id)
+    public function ScopefindUser($query, $id)
     {
-        $user['info'] = User::query()
+        $user['info'] = $query
             ->select('id', 'name', 'birthday', 'gender', 'searching_gender')
             ->leftJoin('users_events', 'users.id', '=', 'users_events.user_id')
             ->leftJoin('users_details', 'users.id', '=', 'users_details.user_id')
@@ -78,6 +78,21 @@ class User extends Authenticatable
 
         $user['photos'] = !is_null($user['info']) ? UserPhoto::query()->select('image_name as image', 'sort')->where('user_id', $user['info']->id)->latest('sort')->get() : [];
 
+        return $user;
+    }
+
+    public function ScopeMatchUser($query, $newEventObj)
+    {
+        $user = [];
+        $countUser = UserEvent::IsMatchCounter($newEventObj);
+        if ($countUser == 2){
+            $user['info'] = $query
+                ->select('id', 'name', 'birthday', 'gender', 'searching_gender')
+                ->leftJoin('users_details', 'users.id', '=', 'users_details.user_id')
+                ->find($newEventObj->user_liked_id);
+
+            $user['photos'] = !is_null($user['info']) ? UserPhoto::query()->select('image_name as image', 'sort')->where('user_id', $user['info']->id)->latest('sort')->get() : [];
+        }
         return $user;
     }
 }

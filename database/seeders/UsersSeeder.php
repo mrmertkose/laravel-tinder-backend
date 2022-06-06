@@ -30,6 +30,6 @@ class UsersSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]
         ]);
-        User::factory()->count(25)->create();
+        User::factory()->count(499)->create();
     }
 }

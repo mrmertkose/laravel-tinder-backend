@@ -19,7 +19,7 @@ class UserDetailFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => $this->faker->unique()->numberBetween(1,25),
+            'user_id' => $this->faker->unique()->numberBetween(1,500),
             'birthday' => $this->faker->date($format = 'Y-m-d', $max = '1999-06-09'),
             'gender' => $this->faker->numberBetween($min = 1, $max = 3),
             'searching_gender' => $this->faker->numberBetween($min = 1, $max = 3),

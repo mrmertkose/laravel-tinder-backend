@@ -18,13 +18,14 @@ use App\Http\Controllers\Api\Auth\AuthController;
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
-    Route::controller(UserController::class)->group(function(){
+    Route::controller(UserController::class)->group(function () {
         Route::get('findUser', 'findUser');
         Route::post('postUserPhoto', 'postUserPhoto');
+        Route::post('userActivity', 'userActivity');
     });
 });
 
-Route::controller(AuthController::class)->group(function(){
+Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
 });
