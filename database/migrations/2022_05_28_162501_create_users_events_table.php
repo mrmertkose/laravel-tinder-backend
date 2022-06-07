@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users_events', function (Blueprint $table) {
-            $table->id('users_events_id');
+            $table->id('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('user_liked_id');
             $table->integer('status')->comment('1 = like | 2 = unlike | 3 = report');

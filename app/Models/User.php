@@ -62,7 +62,7 @@ class User extends Authenticatable
     public function findUser($id)
     {
         $user['info'] =self::query()
-            ->select('id', 'name', 'birthday', 'gender', 'searching_gender')
+            ->select('users.id', 'name', 'birthday', 'gender', 'searching_gender')
             ->leftJoin('users_events', 'users.id', '=', 'users_events.user_id')
             ->leftJoin('users_details', 'users.id', '=', 'users_details.user_id')
             ->whereNotIn('users.id', function ($query) use ($id) {
@@ -85,9 +85,9 @@ class User extends Authenticatable
     {
         $user = [];
         $countUser = UserEvent::isMatchCounter($newEventObj);
-        if ($countUser == 2){
+        if ($countUser == 2) {
             $user['info'] = self::query()
-                ->select('id', 'name', 'birthday', 'gender', 'searching_gender')
+                ->select('users.id', 'name', 'birthday', 'gender', 'searching_gender')
                 ->leftJoin('users_details', 'users.id', '=', 'users_details.user_id')
                 ->find($newEventObj->user_liked_id);
 

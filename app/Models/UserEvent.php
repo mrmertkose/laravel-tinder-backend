@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ActivityTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +23,7 @@ class UserEvent extends Model
         return self::query()
             ->whereIn('user_id', [$newEventObj->user_id,$newEventObj->user_liked_id])
             ->whereIn('user_liked_id', [$newEventObj->user_id,$newEventObj->user_liked_id])
-            ->where('status', '=', 1)
-            ->count('users_events_id');
+            ->where('status', '=', ActivityTypeEnum::activityStatus['like'])
+            ->count('id');
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users_details', function (Blueprint $table) {
-            $table->id('user_detail_id');
+            $table->id('id');
             $table->unsignedBigInteger('user_id');
             $table->date('birthday');
             $table->integer('gender')->default(0)->comment('1 = man,2 = woman,3 = nonbinary');
