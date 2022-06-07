@@ -59,9 +59,9 @@ class User extends Authenticatable
         return $this->hasMany(UserPhoto::class, 'user_id', 'id');
     }
 
-    public function ScopefindUser($query, $id)
+    public function findUser($id)
     {
-        $user['info'] = $query
+        $user['info'] =self::query()
             ->select('id', 'name', 'birthday', 'gender', 'searching_gender')
             ->leftJoin('users_events', 'users.id', '=', 'users_events.user_id')
             ->leftJoin('users_details', 'users.id', '=', 'users_details.user_id')
@@ -81,12 +81,12 @@ class User extends Authenticatable
         return $user;
     }
 
-    public function ScopeMatchUser($query, $newEventObj)
+    public function matchUser($newEventObj): array
     {
         $user = [];
-        $countUser = UserEvent::IsMatchCounter($newEventObj);
+        $countUser = UserEvent::isMatchCounter($newEventObj);
         if ($countUser == 2){
-            $user['info'] = $query
+            $user['info'] = self::query()
                 ->select('id', 'name', 'birthday', 'gender', 'searching_gender')
                 ->leftJoin('users_details', 'users.id', '=', 'users_details.user_id')
                 ->find($newEventObj->user_liked_id);

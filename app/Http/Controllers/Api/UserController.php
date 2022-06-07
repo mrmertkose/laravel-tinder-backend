@@ -20,12 +20,12 @@ class UserController extends Controller
 {
     use apiResponse;
 
-    public function findUser(): JsonResponse
+    public function findUser(User $user): JsonResponse
     {
         try {
             $getToken = request()->bearerToken();
             $token = PersonalAccessToken::findToken($getToken);
-            $user = User::findUser($token->tokenable->id);
+            $user = $user->findUser($token->tokenable->id);
             return $this->success(!is_null($user['info']) ? new UserDetailResource($user) : null);
         } catch (Throwable $error) {
             return $this->failure($error->getMessage());
@@ -47,8 +47,8 @@ class UserController extends Controller
                 'user_liked_id' => $toUserId,
                 'status' => $activity,
             ]);
-            $data = User::MatchUser($newEvent);
-            $data = count($data) != 0 ? new UserDetailResource(User::MatchUser($newEvent)) : null;
+            $data = $user->matchUser($newEvent);
+            $data = count($data) != 0 ? new UserDetailResource($data) : null;
         }
         return $this->success($data, null);
     }

@@ -17,9 +17,9 @@ class UserEvent extends Model
         'status'
     ];
 
-    public function scopeIsMatchCounter($query, $newEventObj)
+    public static function isMatchCounter($newEventObj): int
     {
-        return $query
+        return self::query()
             ->whereIn('user_id', [$newEventObj->user_id,$newEventObj->user_liked_id])
             ->whereIn('user_liked_id', [$newEventObj->user_id,$newEventObj->user_liked_id])
             ->where('status', '=', 1)
